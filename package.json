@@ -1,0 +1,19 @@
+{
+	"name": "name",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"dependencies": {
+	},
+	"devDependencies": {
+		"@types/node": "^15.0.1",
+		"ts-node-dev": "^1.1.6",
+		"typescript": "^4.2.4"
+	},
+	"scripts": {
+		"dev": "ts-node-dev --quiet --clear --rs --respawn --transpile-only src/app.ts",
+		"build": "tsc",
+		"start": "node build/app.js",
+		"production": "npm build && pm2 start ./configs/app.json && pm2 save"
+	}
+}
