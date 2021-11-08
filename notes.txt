@@ -1,0 +1,5 @@
+-- Example API Call URL --
+
+	ROOT = http://api.tomtom.com
+
+	http://api.tomtom.com/map/1/tile/basic/main/0/0/0.png?view=Unified&key=YOUR_API_KEY
