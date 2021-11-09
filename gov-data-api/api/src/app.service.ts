@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Between } from 'typeorm';
 import { DataEntity } from './datastorage/datastorage.entity';
 import { DataStorageService } from './datastorage/datastorage.service';
 
@@ -6,18 +7,26 @@ import { DataStorageService } from './datastorage/datastorage.service';
 export class AppService {
 
 	constructor(private dataStorage: DataStorageService) {}
-  getHello(): string {
-    return 'Hello World!';
-  }
+
+	async addDataAtCoords(lat: number, long: number): Promise<void> {
+		var d = new DataEntity;
+
+		d.latitude=  lat;
+		d.longnitude = long;
+		d.data = "digned";
+		this.dataStorage.addData(d);
+	}
 
   async getDataAtCoords(lat: number, long: number): Promise<Object> {
-	var d = new DataEntity;
 	
-	d.latitude=  -1;
-	d.longnitude = -1;
-	d.data = "kankeeeer";
-	await this.dataStorage.addData(d);
-	return "Data" + JSON.stringify(await this.dataStorage.getData());	
+	const range = 0.01;
+	// await this.dataStorage.addData(d);
+	this.dataStorage.clear();
+	return "Data" + JSON.stringify(await this.dataStorage.getDataQuery(
+		{latitude: Between(lat - range / 2, lat + range / 2),
+		 longnitude: Between(long - range / 2, long + range / 2)
+		}
+	));	
 	// return {
 	// 		latitude: lat,
 	// 		longnitude: long,
@@ -28,5 +37,14 @@ export class AppService {
 	// 			}
 	// 		]
 	// 	};
+  }
+
+  async removeAll()
+  {
+	  this.dataStorage.clear();
+  }
+
+  async getAll() {
+	  return JSON.stringify(await this.dataStorage.getAllData());
   }
 }

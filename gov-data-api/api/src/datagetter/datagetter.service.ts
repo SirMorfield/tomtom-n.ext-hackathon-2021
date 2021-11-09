@@ -9,7 +9,7 @@ export class DataGetterService{
 	{}
 
 	async addItem() {
-		this.dataStorage.getData();
+		this.dataStorage.getAllData();
 	}
 
 }

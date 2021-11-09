@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { Repository } from "typeorm";
+import { Between, Repository } from "typeorm";
 import { DataEntity } from "./datastorage.entity";
 
 @Injectable()
@@ -9,9 +9,14 @@ export class DataStorageService {
         private dataRepo: Repository<DataEntity>,
     ) {}
 
-	async getData(): Promise<DataEntity>
+	async getAllData(): Promise<DataEntity[]>
 	{
-		return await this.dataRepo.find()[0];
+		return await this.dataRepo.find();
+	}
+
+	async getDataQuery(findobject: Object): Promise<DataEntity[]>
+	{
+		return await this.dataRepo.find();
 	}
 
 	async addData(data: DataEntity)
@@ -20,5 +25,13 @@ export class DataStorageService {
 		console.log("wow! we saved a thing");
 	}
 
-
+	async clear()
+	{
+		const data: DataEntity[] = await this.getAllData();
+		for (let i = 0; i < data.length; i++) {
+			const e = data[i];
+			this.dataRepo.delete(e);
+			
+		}
+	}
 }
