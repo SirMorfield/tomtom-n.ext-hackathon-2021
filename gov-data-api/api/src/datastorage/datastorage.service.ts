@@ -16,7 +16,7 @@ export class DataStorageService {
 
 	async getDataQuery(findobject: Object): Promise<DataEntity[]>
 	{
-		return await this.dataRepo.find();
+		return await this.dataRepo.find(findobject);
 	}
 
 	async addData(data: DataEntity)

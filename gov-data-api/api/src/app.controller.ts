@@ -7,7 +7,7 @@ export class AppController
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  async getHello(): Promise<string> {
+  async getAll(): Promise<string> {
     return await this.appService.getAll();
   }
 
@@ -17,13 +17,13 @@ export class AppController
   }
 
   @Get('add/')
-  async addDataAtCoords(@Query('lat') latitude, @Query('long') longnitude): Promise<string> {
-	  await this.appService.addDataAtCoords(latitude, longnitude);
-		return "all good";
+  async addDataAtCoords(@Query('lat') latitude, @Query('long') longnitude): Promise<void> {
+		await this.appService.addDataAtCoords(latitude, longnitude);
 	}
 
   @Get('clear')
   async clear() {
+	  console.log("removing stuff");
 	  return this.appService.removeAll();
   }
 }
