@@ -1,6 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-// import fetch from 'cross-fetch'
+import fetch from 'cross-fetch'
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -27,7 +27,7 @@ function App() {
 	const [mapLatitude, setMapLatitude] = useState(52.377271);
 	const [mapZoom, setMapZoom] = useState(13);
 	const [map, setMap] = useState({});
-	const [center, setCenter] = useState([99, 999])
+	let currentCenter = [99, 999]
 
 	const increaseZoom = () => {
 		if (mapZoom < MAX_ZOOM) {
@@ -45,7 +45,8 @@ function App() {
 		map.setCenter([parseFloat(mapLongitude), parseFloat(mapLatitude)]);
 		map.setZoom(mapZoom);
 	};
-	function dist2coordates(a, b) {
+
+	function dist2coordates(a: [number, number], b: [number, number]): number {
 		// console	.log(a, b)
 		return Math.sqrt(Math.pow((a[0] - b[0]), 2) + Math.pow((a[1] - b[1]), 2))
 	}
@@ -64,13 +65,12 @@ function App() {
 		// map.addLayer()
 		setInterval(() => {
 			const newCenter = map.getCenter()
-			if (dist2coordates([newCenter.lng, newCenter.lat], center) > 0.1) {
+			if (dist2coordates([newCenter.lng, newCenter.lat], currentCenter) > 0.001) {
 				showDeicedRoads(newCenter.lat, newCenter.lng)
-				setCenter([newCenter.lng, newCenter.lat])
+				currentCenter = [newCenter.lng, newCenter.lat]
+				// console.log('update')
 			}
-			console.log('update location', center, [newCenter.lng, newCenter.lat], dist2coordates(center, [newCenter.lng, newCenter.lat]))
-		}, 500)
-		// var marker = new tt.Marker(middleCoordinates).setLngLat().addTo(map);
+		}, 400)
 
 		map.addControl(new tt.FullscreenControl());
 		map.addControl(new tt.NavigationControl());
@@ -117,10 +117,9 @@ function App() {
 		map.addLayer(layerProperties);
 	}
 
-	async function showDeicedRoads(lat, long) {
+	async function showDeicedRoads(lat: number, long: number) {
 		try {
-			const response = ''; 
-			// const response = await fetch(`//localhost:80/coords/?lat=${lat}&long=${long}&range=0.5&max=100`)
+			const response = await fetch(`//localhost:80/coords/?lat=${lat}&long=${long}&range=0.5&max=100`)
 			let data = await response.text()
 			data = JSON.parse(data)
 			for (const street of data) {
