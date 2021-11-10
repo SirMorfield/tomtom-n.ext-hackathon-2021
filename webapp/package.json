@@ -40,6 +40,8 @@
     ]
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^8.2.0",
     "eslint-config-react-app": "^6.0.0"
   }
 }

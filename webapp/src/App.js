@@ -1,6 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import fetch from 'cross-fetch'
+// import fetch from 'cross-fetch'
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -119,7 +119,8 @@ function App() {
 
 	async function showDeicedRoads(lat, long) {
 		try {
-			const response = await fetch(`//localhost:80/coords/?lat=${lat}&long=${long}&range=0.5&max=100`)
+			const response = ''; 
+			// const response = await fetch(`//localhost:80/coords/?lat=${lat}&long=${long}&range=0.5&max=100`)
 			let data = await response.text()
 			data = JSON.parse(data)
 			for (const street of data) {

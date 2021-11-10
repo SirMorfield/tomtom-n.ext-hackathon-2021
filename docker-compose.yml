@@ -1,0 +1,27 @@
+version: "3.3"
+services:
+  # backend:
+  #   build: gov-data-api/api/.
+  #   volumes:
+  #     - "./gov-data-api/api:/serv"
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - "postgres"
+
+  # postgres:
+  #   image: postgres:13.4
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: codam
+  #     POSTGRES_DB: pongping
+
+  webapp:
+    build: webapp/.
+    volumes:
+      - "./webapp:/serv"
+    ports:
+      - "3000:3000"
+      
