@@ -1,6 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
+import fetch from 'cross-fetch'
 import * as React from "react";
 import { useState, useEffect, useRef } from "react";
 import {
@@ -27,6 +27,7 @@ function App() {
 	const [mapLatitude, setMapLatitude] = useState(52.377271);
 	const [mapZoom, setMapZoom] = useState(13);
 	const [map, setMap] = useState({});
+	const [center, setCenter] = useState([99, 999])
 
 	const increaseZoom = () => {
 		if (mapZoom < MAX_ZOOM) {
@@ -44,6 +45,10 @@ function App() {
 		map.setCenter([parseFloat(mapLongitude), parseFloat(mapLatitude)]);
 		map.setZoom(mapZoom);
 	};
+	function dist2coordates(a, b) {
+		// console	.log(a, b)
+		return Math.sqrt(Math.pow((a[0] - b[0]), 2) + Math.pow((a[1] - b[1]), 2))
+	}
 
 	useEffect(() => {
 		let map = tt.map({
@@ -57,16 +62,25 @@ function App() {
 			zoom: mapZoom
 		});
 		// map.addLayer()
+		setInterval(() => {
+			const newCenter = map.getCenter()
+			if (dist2coordates([newCenter.lng, newCenter.lat], center) > 0.1) {
+				showDeicedRoads(newCenter.lat, newCenter.lng)
+				setCenter([newCenter.lng, newCenter.lat])
+			}
+			console.log('update location', center, [newCenter.lng, newCenter.lat], dist2coordates(center, [newCenter.lng, newCenter.lat]))
+		}, 500)
+		// var marker = new tt.Marker(middleCoordinates).setLngLat().addTo(map);
 
 		map.addControl(new tt.FullscreenControl());
 		map.addControl(new tt.NavigationControl());
 		setMap(map);
+
 		return () => map.remove();
 	}, []);
 
 
 	function drawLine(id, properties) {
-		console.log('aaa', map)
 		if (map.getLayer(id)) {
 			map.removeLayer(id);
 			map.removeSource(id);
@@ -103,18 +117,28 @@ function App() {
 		map.addLayer(layerProperties);
 	}
 
-	function showDeicedRoads() {
-		const properties = {
-			color: '#FFFFFF',
-			width: 6,
-			route: [[4.847626862237297, 52.38515011506334], [4.847678991868759, 52.384743334930192], [4.847190727736259, 52.384723178986697], [4.847212199615573, 52.384851243982169], [4.847260046839946, 52.385060570314479], [4.847378665239381, 52.385295169130089], [4.847345736368611, 52.385636318465636], [4.84724344099584, 52.385729414196824], [4.847004596910148, 52.385782790506148], [4.845505189317328, 52.385709549301069], [4.845299991572108, 52.385756020719533], [4.845153593424259, 52.38591778569716], [4.845142653689031, 52.386243099859527], [4.846909475479608, 52.386051313893326], [4.847330118596437, 52.386204800999209], [4.84769908486659, 52.386312726160988], [4.848297706377958, 52.386339269126417], [4.84954446185128, 52.386270535627915], [4.850813371662083, 52.3861538410573], [4.853413044462631, 52.385920114764701], [4.855936887264987, 52.385764283235709], [4.858935406083533, 52.385688790213727], [4.860919023082445, 52.385718536247538], [4.862272064262022, 52.385796892328329], [4.86396142297138, 52.386080865994238], [4.86590494790504, 52.386550110470772], [4.867284129500027, 52.386973840580069]],
-			style: {
-				name: 'line-opacity',
-				value: 0.5
+	async function showDeicedRoads(lat, long) {
+		try {
+			const response = await fetch(`//localhost:80/coords/?lat=${lat}&long=${long}&range=0.5&max=100`)
+			let data = await response.text()
+			data = JSON.parse(data)
+			for (const street of data) {
+				const properties = {
+					color: '#000000',
+					width: 9,
+					route: JSON.parse(street.points),
+					// route: [[4.811208606546883, 52.35102184564605], [4.809627067026637, 52.35393016689613]],
+					style: {
+						name: 'line-opacity',
+						value: 0.9
+					}
+				}
+				drawLine(String(street.id), properties)
+				//console.log('drawline', street.id, typeof street.points)
 			}
-		}
-		drawLine('testLine', properties)
+		} catch (err) { console.error(err) }
 	}
+
 
 
 	return (
