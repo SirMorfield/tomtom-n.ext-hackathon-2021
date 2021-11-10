@@ -1,0 +1,9 @@
+-- Finished --
+
+	https://developer.tomtom.com/blog/build-different/add-tomtom-maps-website-30-seconds
+
+-- Sources --
+
+	https://developer.tomtom.com/maps-sdk-web-js/documentation
+	https://developer.tomtom.com/maps-sdk-web-js/tutorials
+	https://www.youtube.com/watch?v=cpBYXDqGVaY
