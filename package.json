@@ -5,7 +5,8 @@
 	"main": "app.js",
 	"dependencies": {
 		"express": "^4.17.1",
-		"node-fetch": "^2.6.1"
+		"node-fetch": "^2.6.1",
+		"stream-json": "^1.7.3"
 	},
 	"devDependencies": {
 		"@types/node": "^15.0.1",

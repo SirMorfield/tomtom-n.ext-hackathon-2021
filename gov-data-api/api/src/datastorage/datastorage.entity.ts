@@ -1,17 +1,22 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class DataEntity
-{
-    @PrimaryGeneratedColumn('increment')
-    id: number;
+export class DataEntity {
+	@PrimaryGeneratedColumn('increment')
+	id: number;
+
+	@Column()
+	points: string;
 
 	@Column()
 	latitude: number;
 
 	@Column()
-	longnitude: number;
+	longitude: number;
 
 	@Column()
-	data: string;
+	type: string;
+
+	@Column()
+	details: string;
 }
