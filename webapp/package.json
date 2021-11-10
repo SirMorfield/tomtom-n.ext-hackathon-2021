@@ -1,0 +1,40 @@
+{
+  "name": "tomtom-maps-react",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/runtime": "^7.13.10",
+    "@tomtom-international/web-sdk-maps": "6.11.0",
+    "bootstrap": "4.6.0",
+    "jquery": "3.6.0",
+    "popper.js": "1.16.1",
+    "react": "17.0.0",
+    "react-dom": "17.0.0",
+    "reactstrap": "8.9.0",
+    "web-vitals": "1.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
