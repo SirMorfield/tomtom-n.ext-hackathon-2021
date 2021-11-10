@@ -6,7 +6,7 @@ const config: PostgresConnectionOptions = {
 			port: 5432,
 			username: 'postgres',
 			password: 'codam',
-			database: 'pongping',
+			database: 'tomtom',
 			entities: [],
 			// autoLoadEntities: true,
 			synchronize: true

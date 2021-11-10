@@ -119,7 +119,7 @@ function App() {
 
 	async function showDeicedRoads(lat: number, long: number) {
 		try {
-			const response = await fetch(`//localhost:80/coords/?lat=${lat}&long=${long}&range=0.5&max=100`)
+			const response = await fetch(`//localhost:5000/coords/?lat=${lat}&long=${long}&range=0.5&max=100`)
 			let data = await response.text()
 			data = JSON.parse(data)
 			for (const street of data) {
