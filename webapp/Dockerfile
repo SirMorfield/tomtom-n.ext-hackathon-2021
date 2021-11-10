@@ -1,5 +1,9 @@
 FROM node:16.10
-
-WORKDIR /serv
 EXPOSE 3000
-ENTRYPOINT "./entrypoint.sh"
+WORKDIR /serv
+COPY . .
+RUN npm install -g react-scripts
+
+RUN npm install
+
+ENTRYPOINT ["npm", "run", "start"]
