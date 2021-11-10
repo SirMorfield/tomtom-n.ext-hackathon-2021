@@ -10,7 +10,7 @@ export const databaseProvider = [
 				port: 5432,
 				username: 'postgres',
 				password: 'codam',
-				database: 'pongping',
+				database: 'tomtom',
 				entities: [__dirname + '/../**/*.entity{.ts,.js}'],
 				synchronize: true,
 			}),
