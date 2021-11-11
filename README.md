@@ -5,7 +5,7 @@ Merges data from the Dutch government into the TomTom map API.
 ## Implemented Features
 - shows de-iced roads in different colors.
 ### Visualisation
-to see the data goto [localhost](http://localhost) when running
+to see the data goto [localhost:8080](http://localhost:8080) when running
 
 ## To build
 `docker-compose up --build`
