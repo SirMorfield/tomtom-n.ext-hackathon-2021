@@ -1,6 +1,6 @@
 # Team TimTim: tomtom-n.ext-hackathon-2021
 
-Merges data from the dutch government into the TomTom map API.
+Merges data from the Dutch government into the TomTom map API.
 
 ## Implemented Features
 - shows de-iced roads in different colors.
