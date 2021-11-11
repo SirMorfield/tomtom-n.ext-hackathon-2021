@@ -1,11 +1,12 @@
 version: "3.3"
 services:
   backend:
+    container_name: backend
     build: gov-data-api/.
     volumes:
       - "./gov-data-api/:/serv"
     ports:
-      - "5000:5000"
+      - "8081:5000"
     depends_on:
       - "postgres"
 
@@ -19,9 +20,10 @@ services:
       POSTGRES_DB: tomtom
 
   webapp:
+    depends_on:
+      - backend
     build: webapp/.
     volumes:
       - "./webapp:/serv"
     ports:
-      - "80:80"
-      
+      - "8080:80"
