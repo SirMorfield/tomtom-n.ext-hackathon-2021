@@ -26,7 +26,7 @@ function App() {
 	const [mapLongitude, setMapLongitude] = useState(4.891953);
 	const [mapLatitude, setMapLatitude] = useState(52.377271);
 	const [mapZoom, setMapZoom] = useState(13);
-	const [map, setMap] = useState({});
+	let [map, setMap] = useState({});
 	let currentCenter = [99, 999]
 
 	const increaseZoom = () => {
@@ -50,9 +50,20 @@ function App() {
 		// console	.log(a, b)
 		return Math.sqrt(Math.pow((a[0] - b[0]), 2) + Math.pow((a[1] - b[1]), 2))
 	}
+	async function showDeicedroadsLoop() {
+		await new Promise((resolve) => setTimeout(() => { resolve() }, 500)) // wait for map's styles to load
+		while (1) {
+			const newCenter = map.getCenter()
+			if (dist2coordates([newCenter.lng, newCenter.lat], currentCenter) > 0.0007) {
+				await showDeicedRoads(newCenter.lat, newCenter.lng)
+				currentCenter = [newCenter.lng, newCenter.lat]
+			}
+			await new Promise((resolve) => setTimeout(() => { resolve() }, 10))
+		}
+	}
 
 	useEffect(() => {
-		let map = tt.map({
+		map = tt.map({
 			/*
 			This key will API key only works on this Stackblitz. To use this code in your own project,
 			sign up for an API key on the TomTom Developer Portal.
@@ -63,25 +74,17 @@ function App() {
 			zoom: mapZoom
 		});
 		// map.addLayer()
-		setInterval(() => {
-			const newCenter = map.getCenter()
-			if (dist2coordates([newCenter.lng, newCenter.lat], currentCenter) > 0.001) {
-				showDeicedRoads(newCenter.lat, newCenter.lng)
-				currentCenter = [newCenter.lng, newCenter.lat]
-				// console.log('update')
-			}
-		}, 400)
 
 		map.addControl(new tt.FullscreenControl());
 		map.addControl(new tt.NavigationControl());
 		setMap(map);
-
-		return () => map.remove();
+		showDeicedroadsLoop()
+		return () => { }
 	}, []);
-
 
 	function drawLine(id, properties) {
 		if (map.getLayer(id)) {
+			return // ignore addition if road is already added
 			map.removeLayer(id);
 			map.removeSource(id);
 		}
@@ -119,21 +122,25 @@ function App() {
 
 	async function showDeicedRoads(lat: number, long: number) {
 		try {
-			const response = await fetch(`//localhost:5000/coords/?lat=${lat}&long=${long}&range=0.5&max=100`)
+			// console.log(`//localhost:8081/coords/?lat=${lat}&long=${long}&range=0.5&max=100&type=Strooier`)
+			const response = await fetch(`//localhost:8081/coords/?lat=${lat}&long=${long}&range=0.008&max=100000&type=Strooier`)
 			let data = await response.text()
 			data = JSON.parse(data)
+			console.log(`Added ${data.length} streets`)
 			for (const street of data) {
 				const properties = {
-					color: '#000000',
-					width: 9,
+					color: '#FF0810',
+					width: 2.5,
 					route: JSON.parse(street.points),
 					// route: [[4.811208606546883, 52.35102184564605], [4.809627067026637, 52.35393016689613]],
 					style: {
 						name: 'line-opacity',
-						value: 0.9
+						value: 0.7
 					}
 				}
 				drawLine(String(street.id), properties)
+				// await new Promise((resolve) => setTimeout(() => { resolve() }, 1))
+
 				//console.log('drawline', street.id, typeof street.points)
 			}
 		} catch (err) { console.error(err) }
@@ -184,13 +191,6 @@ function App() {
 							<Row className="updateButton">
 								<Button color="primary" onClick={updateMap}>
 									Update Map
-								</Button>
-							</Row>
-						</Col>
-						<Col xs="12">
-							<Row className="showDeicedRoads">
-								<Button color="primary" onClick={() => showDeicedRoads(map)}>
-									Show deiced roads
 								</Button>
 							</Row>
 						</Col>
