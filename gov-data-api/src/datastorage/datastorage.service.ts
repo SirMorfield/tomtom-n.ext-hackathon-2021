@@ -19,7 +19,6 @@ export class DataStorageService {
 
 	async addData(data: DataEntity) {
 		await this.dataRepo.save(data);
-		console.log("wow! we saved a thing" + data.type);
 	}
 
 	async clear() {

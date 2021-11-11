@@ -1,10 +1,9 @@
-# tomtom-n.ext-hackathon-2021
+# Team TimTim: tomtom-n.ext-hackathon-2021
 
 Merges data from the dutch government into the TomTom map API.
 
-## Features
+## Implemented Features
 - shows de-iced roads in different colors.
-- shows parking garages and their current parking spot availability
 ### Visualisation
 to see the data goto [localhost](http://localhost) when running
 
@@ -12,7 +11,7 @@ to see the data goto [localhost](http://localhost) when running
 `docker-compose up --build`
 
 ## Api endpoints
-`/coords/?lat=number&long=number&max=number&range=number&type=number`
+`/coords/?lat=number&long=number&max=number&range=number&type=string`
 ___
 This returns items found in the viscinity of the coordinates given.
 
@@ -20,7 +19,6 @@ This returns items found in the viscinity of the coordinates given.
 - `range`: range in size of coordinates: eg. 0.1deg
 - `type`: ParkingGarage or Strooier
 - `lat, long`: the coordinates of the startpoint
-
 ___
 `/clear`
 

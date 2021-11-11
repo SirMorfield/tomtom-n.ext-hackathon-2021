@@ -25,7 +25,6 @@ export class AppController {
 
 	@Get('add/')
 	async addDataAtCoords(@Query('lat') latitude, @Query('long') longitude): Promise<void> {
-
 		await this.appService.addDataAtCoords(latitude, longitude);
 	}
 
@@ -36,7 +35,7 @@ export class AppController {
 
 	@Get('clear')
 	async clear() {
-		console.log("removing stuff");
+		console.log("Clearing Database");
 		return this.appService.removeAll();
 	}
 

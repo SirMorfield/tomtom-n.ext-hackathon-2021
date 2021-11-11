@@ -22,7 +22,9 @@ export class AppService {
 	constructor(private dataStorage: DataStorageService,
 		private deicingService: DeicingService,
 		private parkingSpotsService: ParkingSportsService
-	) { }
+	) {
+		this.loadDataFromApis();
+	}
 
 	async addDataAtCoords(lat: number, long: number): Promise<void> {
 		var d = new DataEntity;
@@ -84,17 +86,16 @@ export class AppService {
 			icedata[i].longitude = Math.round(icedata[i].longitude * multiplier);
 			await this.dataStorage.addData(icedata[i]);
 		}
-		console.log("done with strooier");
+		console.log("Finished Loading Strooier");
 		const parkingdata: DataEntity[] = await this.parkingSpotsService.getData();
 
-		console.log("startuuuu" + parkingdata.length);
 		await this.dataStorage.remove({ type: "ParkingGarage" });
 		for (let i = 0; i < parkingdata.length; i++) {
 			parkingdata[i].latitude = Math.round(parkingdata[i].latitude * multiplier);
 			parkingdata[i].longitude = Math.round(parkingdata[i].longitude * multiplier);
 			await this.dataStorage.addData(parkingdata[i]);
 		}
-		console.log("done with garage");
+		console.log("Finished Loading ParkingGarage");
 	}
 
 	async getAll() {

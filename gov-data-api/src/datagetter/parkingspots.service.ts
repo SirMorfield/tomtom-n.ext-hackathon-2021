@@ -57,7 +57,6 @@ export class ParkingSportsService {
 
 		for (let i = 0; i < spots.length; i++) {
 			this.parseFeature(spots[i], rval);
-			console.log("added garage");
 		}
 		return rval;
 	}
